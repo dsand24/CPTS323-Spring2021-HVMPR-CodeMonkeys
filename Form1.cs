@@ -24,6 +24,7 @@ namespace CodeMonkeys___HVMPR_Project
             InitializeComponent();
             gMapControl1.MapProvider = GoogleMapProvider.Instance;
             // put key here
+            GoogleMapProvider.Instance.ApiKey = "AIzaSyC2V-ZH_EDYWXJ2l82ZRB1OV4Pd95k1YuI";
             gMapControl1.Position = new PointLatLng(46.271701, -119.194216);
             gMapControl1.MinZoom = 0;
             gMapControl1.MaxZoom = 22;
@@ -64,6 +65,21 @@ namespace CodeMonkeys___HVMPR_Project
 
             routeOverlay.Routes.Add(r);                  // add route to overlay
             gMapControl1.Overlays.Add(routeOverlay);    // turn route overlay on
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
