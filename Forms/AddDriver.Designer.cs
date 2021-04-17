@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace CodeMonkeys___HVMPR_Project
 {
     partial class Form4
@@ -170,6 +172,11 @@ namespace CodeMonkeys___HVMPR_Project
             this.PerformLayout();
 
         }
+
+//        internal void ShowDialog()
+  //      {
+    //        throw new NotImplementedException();
+      //  }
 
         #endregion
 

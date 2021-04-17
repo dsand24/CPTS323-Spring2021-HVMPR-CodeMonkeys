@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CodeMonkeys___HVMPR_Project.Forms;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,8 +21,8 @@ namespace CodeMonkeys___HVMPR_Project
         private void btnLogin_Click(object sender, EventArgs e)
         {
             this.Hide();                // minimizes current page
-            Form1 form1 = new Form1();  // creates new form1
-            form1.ShowDialog();         // shows form1
+            MenuPage mainMenu = new MenuPage();  // creates new form1
+            mainMenu.ShowDialog();         // shows form1
             this.Close();               // exits login page
         }
 

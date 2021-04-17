@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CodeMonkeys___HVMPR_Project.Forms;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -39,6 +40,21 @@ namespace CodeMonkeys___HVMPR_Project
 
         private void label4_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+            //add van to firebase
+
+
+            this.Hide();                // minimizes current page
+            MenuPage menupage = new MenuPage();  // creates new form1
+            menupage.ShowDialog();         // shows form1
+            this.Close();               // exits van page
+
+
 
         }
     }
