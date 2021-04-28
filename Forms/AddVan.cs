@@ -50,9 +50,9 @@ namespace CodeMonkeys___HVMPR_Project
 
 
             this.Hide();                // minimizes current page
-            MenuPage menupage = new MenuPage();  // creates new form1
-            menupage.ShowDialog();         // shows form1
-            this.Close();               // exits van page
+            Form1 mainmap = new Form1();  // creates new map
+            mainmap.ShowDialog();         // shows map
+            this.Close();               // exits menu page
 
 
 

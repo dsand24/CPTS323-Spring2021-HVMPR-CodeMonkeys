@@ -21,9 +21,9 @@ namespace CodeMonkeys___HVMPR_Project
         private void btnLogin_Click(object sender, EventArgs e)
         {
             this.Hide();                // minimizes current page
-            MenuPage mainMenu = new MenuPage();  // creates new form1
-            mainMenu.ShowDialog();         // shows form1
-            this.Close();               // exits login page
+            Form1 mainmap = new Form1();  // creates new map
+            mainmap.ShowDialog();         // shows map
+            this.Close();               // exits menu page
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
