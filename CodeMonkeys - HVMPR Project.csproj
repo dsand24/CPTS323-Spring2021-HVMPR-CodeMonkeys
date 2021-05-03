@@ -94,6 +94,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Class1.cs" />
     <Compile Include="Forms\MenuPage.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -131,9 +132,12 @@
       <DependentUpon>VanInfo.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Appointment.cs" />
+    <Compile Include="Models\Patient.cs" />
+    <Compile Include="Models\Destination.cs" />
     <Compile Include="Models\Driver.cs" />
     <Compile Include="Models\Provider.cs" />
     <Compile Include="Models\Van.cs" />
+    <Compile Include="Models\VanPosition.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\Map.resx">

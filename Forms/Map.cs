@@ -40,7 +40,8 @@ namespace CodeMonkeys___HVMPR_Project
             gMapControl1.MapProvider = GoogleMapProvider.Instance;
             // put key here
             GoogleMapProvider.Instance.ApiKey = "AIzaSyC2V-ZH_EDYWXJ2l82ZRB1OV4Pd95k1YuI";
-            gMapControl1.Position = new PointLatLng(46.271701, -119.194216);
+            gMapControl1.Position = new PointLatLng(46.289106, -119.292999);
+
             gMapControl1.MinZoom = 0;
             gMapControl1.MaxZoom = 22;
             gMapControl1.Zoom = 12;
@@ -62,7 +63,8 @@ namespace CodeMonkeys___HVMPR_Project
             GMarkerGoogle marker2 = new GMarkerGoogle(_points[1], GMarkerGoogleType.green); // lampson
             markersOverlay.Markers.Add(marker);
             markersOverlay.Markers.Add(marker2);
-            gMapControl1.Overlays.Add(markersOverlay); 
+            gMapControl1.Overlays.Add(markersOverlay);
+            gMapControl1.Zoom = 14;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -86,6 +88,7 @@ namespace CodeMonkeys___HVMPR_Project
             //markersList.Markers.Add(endPoint);
             markersList.Markers.Add(vanMarker);
             gMapControl1.Overlays.Add(markersList);
+            gMapControl1.Position = new PointLatLng(46.276860, -119.291511);/////
             gMapControl1.Zoom = 14;
 
            
@@ -124,6 +127,7 @@ namespace CodeMonkeys___HVMPR_Project
         {
             Thread t = new Thread(() =>
             {
+                /*
                 for (int i = 1; i < tablemaproute.Points.Count; i++)
                 {
                     var degree = Bearing(tablemaproute.Points[i - 1], tablemaproute.Points[i]);
@@ -136,12 +140,62 @@ namespace CodeMonkeys___HVMPR_Project
                         var M_point = new PointLatLng(dlat, dlng);
                         Thread.Sleep((int)(Timeout * 0.05));
                         vanMarker.Position = M_point;
+                        ///gMapControl1.Position = M_point;///////////
+                    }
+                }
+                */
+                var timedelay = 0.016;
+
+                for (int i = 1; i < tablemaproute.Points.Count; i++)
+                {
+                    var degree = Bearing(tablemaproute.Points[i - 1], tablemaproute.Points[i]);
+                    var deltaX = Distance(tablemaproute.Points[i - 1], tablemaproute.Points[i]);
+                    degree = (degree * 180 / Math.PI + 360) % 360;
+                    vanMarker.Rotate((float)degree);
+                    var distance = 0.00972222222; //35mph to miles per second
+                    var deltaSeconds = deltaX / distance;
+                    deltaSeconds = deltaSeconds /16;
+                    for (double s = 0; s < deltaSeconds; s = s + timedelay)
+                    {
+                        var r = s / deltaSeconds;
+                        var dlat = r * (tablemaproute.Points[i].Lat) + (1 - r) * (tablemaproute.Points[i - 1].Lat);
+                        var dlng = r * (tablemaproute.Points[i].Lng) + (1 - r) * (tablemaproute.Points[i - 1].Lng);
+                        var M_point = new PointLatLng(dlat, dlng);
+                        Thread.Sleep((int)(timedelay * 1000));
+                        vanMarker.Position = M_point;
+                        
                     }
                 }
             }
             );
             t.Start();
         }
+        private double Distance(PointLatLng p1, PointLatLng p2)
+        {
+            //radius of earth in meters
+            double R = 6371e3;
+
+            double l1 = p1.Lat * Math.PI / 180;
+            double l2 = p2.Lat * Math.PI / 180;
+
+            double theta = (p2.Lat - p1.Lat) * Math.PI / 180;
+
+            double lambda = (p2.Lng - p1.Lng) * Math.PI / 180;
+
+            double a = Math.Sin(theta / 2) * Math.Sin(theta / 2)
+                + Math.Cos(l1) * Math.Cos(l2) *
+                Math.Sin(lambda / 2) * Math.Sin(lambda / 2);
+
+            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+
+
+            double m = R * c; // get distance in meters
+
+
+            return m / 1609.344; //returns distance in miles
+
+        }
+
 
         public double Bearing(PointLatLng p1, PointLatLng p2)
         {
