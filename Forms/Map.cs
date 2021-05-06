@@ -40,7 +40,8 @@ namespace CodeMonkeys___HVMPR_Project
             gMapControl1.MapProvider = GoogleMapProvider.Instance;
             // put key here
             GoogleMapProvider.Instance.ApiKey = "AIzaSyC2V-ZH_EDYWXJ2l82ZRB1OV4Pd95k1YuI";
-            gMapControl1.Position = new PointLatLng(46.271701, -119.194216);
+            gMapControl1.Position = new PointLatLng(46.289106, -119.292999);
+
             gMapControl1.MinZoom = 0;
             gMapControl1.MaxZoom = 22;
             gMapControl1.Zoom = 12;
@@ -62,12 +63,13 @@ namespace CodeMonkeys___HVMPR_Project
             GMarkerGoogle marker2 = new GMarkerGoogle(_points[1], GMarkerGoogleType.green); // lampson
             markersOverlay.Markers.Add(marker);
             markersOverlay.Markers.Add(marker2);
-            gMapControl1.Overlays.Add(markersOverlay); 
+            gMapControl1.Overlays.Add(markersOverlay);
+            gMapControl1.Zoom = 14;
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            var start = new PointLatLng(46.299106, -119.295999); //current van
+           /* var start = new PointLatLng(46.299106, -119.295999); //current van
             var end = new PointLatLng(46.276860, -119.291511);//appoinmet
             GDirections route;
             GMapOverlay markersList = new GMapOverlay("markers");
@@ -86,8 +88,9 @@ namespace CodeMonkeys___HVMPR_Project
             //markersList.Markers.Add(endPoint);
             markersList.Markers.Add(vanMarker);
             gMapControl1.Overlays.Add(markersList);
+            gMapControl1.Position = new PointLatLng(46.276860, -119.291511);/////
             gMapControl1.Zoom = 14;
-
+           */
            
         }
 
@@ -115,33 +118,130 @@ namespace CodeMonkeys___HVMPR_Project
 
         private void button6_Click(object sender, EventArgs e)
         {
-            for (int i = 1; i < tablemaproute.Points.Count; i++)
-            {
+            PointLatLng[] array = new PointLatLng[3];
+
+            array[0] = new PointLatLng();
+            array[0].Lat = 46.299106;
+            array[0].Lng = -119.295999;
+
+            array[1] = new PointLatLng();
+            array[1].Lat = 46.276860;
+            array[1].Lng = -119.291511;
+
+            array[2] = new PointLatLng();
+            array[2].Lat = 46.271860;
+            array[2].Lng = -119.291678;
+
+            
+                for (int j = 0; j < 1; j++)
+                {
+                    createRoute(array[j], array[j + 1]);
+                }
+           
+
+
+        }
+
+        private void createRoute(PointLatLng startarray, PointLatLng endarray)
+        { 
+           
+           
+                start = startarray;
+                end = endarray;
+               // var start = new PointLatLng(46.299106, -119.295999); //current van
+               // var end = new PointLatLng(46.276860, -119.291511);//appoinmet
+                GDirections route;
+                GMapOverlay markersList = new GMapOverlay("markers");
+
+                var xx = GMap.NET.MapProviders.GMapProviders.GoogleMap.GetDirections(out route, start, end, false, false, false, false, false);
+                tablemaproute = new GMapRoute(route.Route, "Ruta ubication");
+                tablerouteoverlay = new GMapOverlay("Capa de la ruta");
+                tablerouteoverlay.Routes.Add(tablemaproute);
+                gMapControl1.Overlays.Add(tablerouteoverlay);
+
+                GMap.NET.WindowsForms.Markers.GMarkerGoogle startPoint = new GMap.NET.WindowsForms.Markers.GMarkerGoogle(start, GMap.NET.WindowsForms.Markers.GMarkerGoogleType.blue_pushpin);
+                GMap.NET.WindowsForms.Markers.GMarkerGoogle endPoint = new GMap.NET.WindowsForms.Markers.GMarkerGoogle(end, GMap.NET.WindowsForms.Markers.GMarkerGoogleType.blue_pushpin);
+                vanMarker = new GMapMarkerVan(start);
+
+                //markersList.Markers.Add(startPoint);
+                //markersList.Markers.Add(endPoint);
+                markersList.Markers.Add(vanMarker);
+                gMapControl1.Overlays.Add(markersList);
+                gMapControl1.Position = new PointLatLng(46.276860, -119.291511);/////
+                gMapControl1.Zoom = 14;
+
+                //for (int i = 1; i < tablemaproute.Points.Count; i++)
+              //  {
                 animate(1000);
-            }
+               // }
+                //gMapControl1.Overlays.Remove(markersList);
+                
+
         }
         public void animate(int Timeout)
         {
+
+
+
             Thread t = new Thread(() =>
             {
+               
+                var timedelay = 0.016;
+
                 for (int i = 1; i < tablemaproute.Points.Count; i++)
                 {
                     var degree = Bearing(tablemaproute.Points[i - 1], tablemaproute.Points[i]);
+                    var deltaX = Distance(tablemaproute.Points[i - 1], tablemaproute.Points[i]);
                     degree = (degree * 180 / Math.PI + 360) % 360;
                     vanMarker.Rotate((float)degree);
-                    for (double s = 0; s < 1; s = s + 0.05)
+                    var distance = 0.00972222222; //35mph to miles per second
+                    var deltaSeconds = deltaX / distance;
+                    deltaSeconds = deltaSeconds /16;
+                    for (double s = 0; s < deltaSeconds; s = s + timedelay)
                     {
-                        var dlat = s * (tablemaproute.Points[i].Lat) + (1 - s) * (tablemaproute.Points[i - 1].Lat);
-                        var dlng = s * (tablemaproute.Points[i].Lng) + (1 - s) * (tablemaproute.Points[i - 1].Lng);
+                        var r = s / deltaSeconds;
+                        var dlat = r * (tablemaproute.Points[i].Lat) + (1 - r) * (tablemaproute.Points[i - 1].Lat);
+                        var dlng = r * (tablemaproute.Points[i].Lng) + (1 - r) * (tablemaproute.Points[i - 1].Lng);
                         var M_point = new PointLatLng(dlat, dlng);
-                        Thread.Sleep((int)(Timeout * 0.05));
+                        Thread.Sleep((int)(timedelay * 1000));
                         vanMarker.Position = M_point;
+                        
                     }
                 }
+                
+
             }
             );
             t.Start();
+            
+            
         }
+        private double Distance(PointLatLng p1, PointLatLng p2)
+        {
+            //radius of earth in meters
+            double R = 6371e3;
+
+            double l1 = p1.Lat * Math.PI / 180;
+            double l2 = p2.Lat * Math.PI / 180;
+
+            double theta = (p2.Lat - p1.Lat) * Math.PI / 180;
+
+            double lambda = (p2.Lng - p1.Lng) * Math.PI / 180;
+
+            double a = Math.Sin(theta / 2) * Math.Sin(theta / 2)
+                + Math.Cos(l1) * Math.Cos(l2) *
+                Math.Sin(lambda / 2) * Math.Sin(lambda / 2);
+
+            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+
+
+            double m = R * c; // get distance in meters
+
+
+            return m / 1609.344; //returns distance in miles
+
+        }
+
 
         public double Bearing(PointLatLng p1, PointLatLng p2)
         {

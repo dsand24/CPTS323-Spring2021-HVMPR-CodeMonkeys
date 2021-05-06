@@ -23,6 +23,7 @@ namespace CodeMonkeys___HVMPR_Project
             this.Hide();                // minimizes current page
             Form1 mainmap = new Form1();  // creates new map
             mainmap.ShowDialog();         // shows map
+            Fb fb = new Fb();
             this.Close();               // exits menu page
         }
 

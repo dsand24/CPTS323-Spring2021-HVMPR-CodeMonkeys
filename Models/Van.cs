@@ -10,7 +10,8 @@ namespace CodeMonkeys___HVMPR_Project.Models
     {
         public string Make;
         public string Model;
-        public string VanPlate;
-        //public string VanId { get; set; }//hello
+        public string Vials { get; set; }
+        public string CarPlate;
+        public string Vid { get; set; }
     }
 }
