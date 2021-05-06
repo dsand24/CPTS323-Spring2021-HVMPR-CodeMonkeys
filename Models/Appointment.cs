@@ -16,5 +16,6 @@ namespace CodeMonkeys___HVMPR_Project.Models
         public DateTime InitialTime { get; set; }
         public bool acepted { get; set; }
         public double profit { get; set; }
+        public string key; // might be int
     }
 }

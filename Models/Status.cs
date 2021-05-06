@@ -4,9 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CodeMonkeys___HVMPR_Project.Firebase
+namespace CodeMonkeys___HVMPR_Project.Models
 {
-    class Class1
+    public class Status
     {
+        
+        public string code;
+        public long time;
+
     }
 }
